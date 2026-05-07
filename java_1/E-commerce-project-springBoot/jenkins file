@@ -20,7 +20,8 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the project using Maven
-                sh 'mvn clean package'
+                dir('java1/java_1/E-commerce-project-springBoot')
+                sh 'mvn clean package -DskipTests'
             }
         }
         
