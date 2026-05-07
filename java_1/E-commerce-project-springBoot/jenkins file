@@ -12,8 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the GitHub repository
-                git url: "${GITHUB_REPO_URL}", branch: 'main'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SATYA0110/java1/blob/main/java_1/E-commerce-project-springBoot']])
             }
         }
         
