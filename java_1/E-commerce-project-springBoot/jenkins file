@@ -7,6 +7,10 @@ pipeline {
         // Define any environment 
         PROJECT_NAME = "E-commerce-project-springBoot"
         GITHUB_REPO_URL = "https://github.com/SATYA0110/java1/blob/main/java_1/E-commerce-project-springBoot"
+        DOCKER_IMAGE = "jt-spring-project"
+        DOCKER_TAG   = "${BUILD_NUMBER}"
+        // If pushing to Docker Hub, use: "your-dockerhub-user/jt-spring-project"
+        REGISTRY_URL = "gcr.io/satyaproject-487714" 
     }
 
     stages {
@@ -26,13 +30,29 @@ pipeline {
             }
         }
         
-        stage('Test') {
+        stage('Docker Image Build') {
             steps {
-                dir('java_1/E-commerce-project-springBoot') {
-                sh 'mvn test'
-              }
+                script {
+                    echo "Building Docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    // This uses the Dockerfile in your repo root
+                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    sh "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest"
+                }
             }
         }
+
+        stage('Push to Registry') {
+            steps {
+                script {
+                    // Requires 'Docker Pipeline' plugin and credentials configured in Jenkins
+                    docker.withRegistry('https://gcr.io', 'gcp-registry-creds') {
+                        sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                        sh "docker push ${DOCKER_IMAGE}:latest"
+                    }
+                }
+            }
+        }
+
         
         stage('Deploy') {
             steps {
