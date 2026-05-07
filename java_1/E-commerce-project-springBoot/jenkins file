@@ -28,8 +28,9 @@ pipeline {
         
         stage('Test') {
             steps {
-                // Run the tests
+                dir('java_1/E-commerce-project-springBoot') {
                 sh 'mvn test'
+              }
             }
         }
         
