@@ -19,8 +19,9 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the project using Maven
-                dir('java1/java_1/E-commerce-project-springBoot')
+                dir('java1/java_1/E-commerce-project-springBoot'){
                 sh 'mvn clean package -DskipTests'
+               }
             }
         }
         
