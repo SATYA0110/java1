@@ -20,6 +20,7 @@ pipeline {
             steps {
                 // Build the project using Maven
                 dir('java1/java_1/E-commerce-project-springBoot'){
+                sh 'ls -F'
                 sh 'mvn clean package -DskipTests'
                }
             }
